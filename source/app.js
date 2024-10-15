@@ -22,7 +22,13 @@ const livros = [
         id: 2,
         titulo: "O senhor dos anéis 2"
     }
-]
+];
+
+const buscarLivro = (id) => {
+    return livros.findIndex(livro => {
+        return livro.id === Number(id)
+    });
+}
 
 //trazer todos os livros
 app.get("/livros", (req, res) => {
@@ -36,9 +42,25 @@ app.post("/livros", (req, res) => {
 })
 
 //buscar um livro por id
-app.post("/livros/:id", (req, res) => {
+app.get("/livros/:id", (req, res) => {
+    const id = buscarLivro(req.params.id);
+    res.status(200).json(livros[id]);
+});
 
+//Atualizar um livro
+app.put("/livros/:id", (req,res) => {
+    const id = buscarLivro(req.params.id);
+    livros[id].titulo = req.body.titulo;
+    res.status(200).json(livros);
 })
+
+//Deletar um livro
+app.delete("/livros/:id", (req,res) => {
+    const id = buscarLivro(req.params.id);
+    livros.splice(id, 1);
+    res.status(200).json(livros);
+})
+
 
 
 export default app;
