@@ -26,12 +26,6 @@ app.get('/', (req, res) => {
 });
 
 
-//trazer todos os livros
-app.get("/livros", async (req, res) => {
-    const listaLivros = await livro.find({});
-    res.status(200).json(listaLivros);
-});
-
 //criar um livro
 app.post("/livros", (req, res) => {
     const novoLivro = req.body;
