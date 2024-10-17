@@ -17,7 +17,7 @@ class LivroController {
         const novoLivro = req.body;
         try {
             const autorEncontrado = await autor.findById(novoLivro.autor);
-            const livroCompleto = {...novoLivro, autor: {...autorEncontrado._doc }};
+            const livroCompleto = { ...novoLivro, autor: { ...autorEncontrado._doc } };
             const livroCriado = await livro.create(livroCompleto);
             res.status(201).json(livroCriado);
         } catch (error) {
@@ -44,13 +44,24 @@ class LivroController {
         }
     }
 
-    static async deletarLivro(req,res) {
+    static async deletarLivro(req, res) {
         try {
             const id = req.params.id;
             const livroDeletado = await livro.findOneAndDelete(id);
-            res.status(202).json(livroDeletado); 
+            res.status(202).json(livroDeletado);
         } catch (error) {
-            res.status(500).json({message: error.message});
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    static async listarLivrosPorEditor(req, res) {
+        const editora = req.query.editora;
+        try {
+            const livroPorEditora = await  livro.find({
+                editora: editora
+            })
+        } catch (error) {
+            res.json({message: error})
         }
     }
 };
